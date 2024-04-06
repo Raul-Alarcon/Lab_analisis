@@ -1,38 +1,39 @@
 ﻿using adsProyecto.Interfaces;
 using adsProyecto.Models;
 using Microsoft.AspNetCore.Mvc;
+
 namespace adsProyecto.Controllers
 {
-    [Route("api/carreras/")]
-    public class CarreraControlador : ControllerBase
+    [Route("api/materias/")]
+    public class MateriaControlador : ControllerBase
     {
-        private readonly ICarrera carrera;
+        private readonly IMaterias materia;
         private const string COD_EXITO = "000000";
         private const string COD_ERROR = "999999";
         private string pCOdRespuesta;
         private string pMsjUsuario;
         private string pMsjTecnico;
 
-        public CarreraControlador(ICarrera carrera)
+        public MateriaControlador(IMaterias materia)
         {
-            this.carrera = carrera;
+            this.materia = materia;
         }
-        [HttpPost("agregarCarrera")]
-        public ActionResult<string> AgregarCarrera([FromBody] Carrera carrera)
+        [HttpPost("agregarMateria")]
+        public ActionResult<string> AgregarMateria([FromBody] Materias materia)
         {
             try
             {
-                int contador = this.carrera.AgregarCarrera(carrera);
+                int contador = this.materia.AgregarMateria(materia);
                 if(contador > 0)
                 {
                     pCOdRespuesta = COD_EXITO;
-                    pMsjUsuario = "Carrera agregada correctamente";
+                    pMsjUsuario = "Materia agregada correctamente";
                     pMsjTecnico = pCOdRespuesta + "II" + pMsjUsuario;
                 }
                 else
                 {
                     pCOdRespuesta = COD_ERROR;
-                    pMsjUsuario = "Error al agregar carrera";
+                    pMsjUsuario = "Error al agregar materia";
                     pMsjTecnico = pCOdRespuesta + "II" + pMsjUsuario;
                 }
                 return Ok(new {pCOdRespuesta, pMsjUsuario, pMsjTecnico});
@@ -42,60 +43,61 @@ namespace adsProyecto.Controllers
                 throw;
             }
         }
-        [HttpPut("actualizarCarrera/{idCarrera}")]
-        public ActionResult<string> ActualizarCarrera([FromBody] Carrera carrera)
+        [HttpPut("actualizarMateria/{idMateria}")]
+        public ActionResult<string> ActualizarMateria([FromBody] Materias materia)
         {
             try
             {
-                int contador = this.carrera.ModificarCarrera(carrera.IdCarrera, carrera);
+                int contador = this.materia.ModificarMateria(materia.IdMateria, materia);
                 if(contador > 0)
                 {
                     pCOdRespuesta = COD_EXITO;
-                    pMsjUsuario = "Carrera actualizada correctamente";
+                    pMsjUsuario = "Materia actualizada correctamente";
                     pMsjTecnico = pCOdRespuesta + "II" + pMsjUsuario;
                 }
                 else
                 {
                     pCOdRespuesta = COD_ERROR;
-                    pMsjUsuario = "Error al actualizar carrera";
+                    pMsjUsuario = "Error al actualizar materia";
                     pMsjTecnico = pCOdRespuesta + "II" + pMsjUsuario;
                 }
-                return Ok(new {pCOdRespuesta, pMsjUsuario, pMsjTecnico});
+                return Ok(new { pCOdRespuesta, pMsjUsuario, pMsjTecnico });
+            } 
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        [HttpGet("consultarMaterias")]
+        public ActionResult<string> ConsultarMaterias()
+        {
+            try
+            {
+                List<Materias> lstMaterias = this.materia.ConsultarMaterias();
+                return Ok(lstMaterias); 
             }
             catch (Exception ex)
             {
                 throw;
             }
         }
-        [HttpGet("consultarCarreras")]
-        public ActionResult<List<Carrera>> ConsultarCarreras()
+        [HttpGet("consultarMateriaPorID/{idMateria}")]
+        public ActionResult<string> ConsultarMateriaPorID(int idMateria)
         {
             try
             {
-                List<Carrera> lstCarreras = this.carrera.ConsultarCarreras();
-                return Ok(lstCarreras);
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-        }
-        [HttpGet("consultarCarreraPorID/{idCarrera}")]
-        public ActionResult<Carrera> ConsultarCarreraPorID(int idCarrera)
-        {
-            try
-            {
-                Carrera carrera = this.carrera.ConsultarCarreraPorID(idCarrera);
-                if (carrera != null)
+                Materias materia = this.materia.ConsultarMateriaPorID(idMateria);
+                if (materia != null)
                 {
-                    return Ok(carrera);
+                    return Ok(materia);
                 }
                 else
                 {
                     pCOdRespuesta = COD_ERROR;
-                    pMsjUsuario = "Carrera no encontrada";
+                    pMsjUsuario = "Error al consultar materia";
                     pMsjTecnico = pCOdRespuesta + "II" + pMsjUsuario;
-                    return NotFound(new {pCOdRespuesta, pMsjUsuario, pMsjTecnico});
+                    return Ok(new { pCOdRespuesta, pMsjUsuario, pMsjTecnico });
                 }
             }
             catch (Exception ex)
@@ -103,25 +105,25 @@ namespace adsProyecto.Controllers
                 throw;
             }
         }
-        [HttpDelete("eliminarCarrera/{idCarrera}")]
-        public ActionResult<string> EliminarCarrera(int idCarrera)
+        [HttpDelete("eliminarMateria/{idMateria}")]
+        public ActionResult<string> EliminarMateria(int idMateria)
         {
             try
             {
-                bool resultado = this.carrera.EliminarCarrera(idCarrera);
-                if(resultado)
+                bool resultado = this.materia.EliminarMateria(idMateria);
+                if (resultado)
                 {
                     pCOdRespuesta = COD_EXITO;
-                    pMsjUsuario = "Carrera eliminada correctamente";
+                    pMsjUsuario = "Materia eliminada correctamente";
                     pMsjTecnico = pCOdRespuesta + "II" + pMsjUsuario;
                 }
                 else
                 {
                     pCOdRespuesta = COD_ERROR;
-                    pMsjUsuario = "Error al eliminar carrera";
+                    pMsjUsuario = "Error al eliminar materia";
                     pMsjTecnico = pCOdRespuesta + "II" + pMsjUsuario;
                 }
-                return Ok(new {pCOdRespuesta, pMsjUsuario, pMsjTecnico});
+                return Ok(new { pCOdRespuesta, pMsjUsuario, pMsjTecnico });
             }
             catch (Exception ex)
             {

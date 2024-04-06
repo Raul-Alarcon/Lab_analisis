@@ -44,7 +44,7 @@ namespace adsProyecto.Controllers
                 throw;
             }
         }
-        [HttpPost("actualizarEstudiante/{idEstudiante}")]
+        [HttpPut("actualizarEstudiante/{idEstudiante}")]
         public ActionResult<string> ActualizarEstudiante([FromBody] Estudiante estudiante)
         {
             try
