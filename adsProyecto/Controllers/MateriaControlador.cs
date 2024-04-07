@@ -23,6 +23,10 @@ namespace adsProyecto.Controllers
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
                 int contador = this.materia.AgregarMateria(materia);
                 if(contador > 0)
                 {
@@ -48,6 +52,10 @@ namespace adsProyecto.Controllers
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
                 int contador = this.materia.ModificarMateria(materia.IdMateria, materia);
                 if(contador > 0)
                 {
