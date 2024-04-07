@@ -24,6 +24,10 @@ namespace adsProyecto.Controllers
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
                 int contador = this.estudiante.AgregarEstudiante(estudiante);
                 if(contador > 0)
                 {
@@ -49,6 +53,10 @@ namespace adsProyecto.Controllers
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
                 int contador = this.estudiante.ModificarEstudiante(estudiante.IdEstudiante, estudiante);
                 if(contador > 0)
                 {
