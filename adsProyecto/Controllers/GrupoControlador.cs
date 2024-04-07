@@ -24,6 +24,11 @@ namespace adsProyecto.Controllers
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+
+                }
                 int contador = this.grupo.AgregarGrupo(grupo);
                 if(contador > 0)
                 {
@@ -49,6 +54,10 @@ namespace adsProyecto.Controllers
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
                 int contador = this.grupo.ModificarGrupo(grupo.IdGrupo, grupo);
                 if(contador > 0)
                 {
@@ -63,6 +72,42 @@ namespace adsProyecto.Controllers
                     pMsjTecnico = pCOdRespuesta + "II" + pMsjUsuario;
                 }
                 return Ok(new {pCOdRespuesta, pMsjUsuario, pMsjTecnico});
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        [HttpGet("consultarGrupos")]
+        public ActionResult<string> ConsultarGrupos()
+        {
+            try
+            {
+               List<Grupo> lstgrupo = this.grupo.ConsultarGrupo();
+                return Ok(lstgrupo);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        [HttpGet("consultarGrupoPorID/{idGrupo}")]
+        public ActionResult<string> ConsultarGrupoPorID(int idGrupo)
+        {
+            try
+            {
+                Grupo grupo = this.grupo.ConsultarGrupoPorID(idGrupo);
+                if (grupo != null)
+                {
+                    return Ok(grupo);
+                }
+                else
+                {
+                    pCOdRespuesta = COD_ERROR;
+                    pMsjUsuario = "Error al consultar materia";
+                    pMsjTecnico = pCOdRespuesta + "II" + pMsjUsuario;
+                    return Ok(new { pCOdRespuesta, pMsjUsuario, pMsjTecnico });
+                }
             }
             catch (Exception ex)
             {
