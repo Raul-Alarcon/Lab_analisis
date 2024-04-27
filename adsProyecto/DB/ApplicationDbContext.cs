@@ -9,5 +9,6 @@ namespace adsProyecto.DB
         {
         }
         public DbSet<Estudiante> Estudiantes { get; set; }
+        public DbSet<Carrera> Carreras { get; set; }    
     }
 }
