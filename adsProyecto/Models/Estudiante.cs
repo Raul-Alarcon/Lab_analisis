@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 namespace adsProyecto.Models
 {
+    [PrimaryKey(nameof(IdEstudiante))]
     public class Estudiante
     {
         public int IdEstudiante { get; set; }

@@ -1,8 +1,13 @@
+using adsProyecto.DB;
 using adsProyecto.Interfaces;
 using adsProyecto.Repositorios;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//Conf de dbcontext
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("name = DefaultConnection"));
 
 // Add services to the container.
 
