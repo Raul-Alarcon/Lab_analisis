@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using adsProyecto.DB;
 
@@ -10,9 +11,11 @@ using adsProyecto.DB;
 namespace adsProyecto.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240507214911_Materias")]
+    partial class Materias
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -123,34 +126,6 @@ namespace adsProyecto.Migrations
                     b.HasKey("IdMateria");
 
                     b.ToTable("Materias");
-                });
-
-            modelBuilder.Entity("adsProyecto.Models.Profesor", b =>
-                {
-                    b.Property<int>("IdProfesor")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdProfesor"));
-
-                    b.Property<string>("Apellido")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Correo")
-                        .IsRequired()
-                        .HasMaxLength(254)
-                        .HasColumnType("nvarchar(254)");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("IdProfesor");
-
-                    b.ToTable("Profesores");
                 });
 #pragma warning restore 612, 618
         }
