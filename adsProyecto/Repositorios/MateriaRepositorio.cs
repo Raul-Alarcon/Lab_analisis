@@ -1,23 +1,31 @@
-﻿using adsProyecto.Interfaces;
+﻿using adsProyecto.DB;
+using adsProyecto.Interfaces;
 using adsProyecto.Models;
 
 namespace adsProyecto.Repositorios
 {
     public class MateriaRepositorio : IMaterias
     {
-        private List<Materias> lstMaterias = new List<Materias>
+        /*private List<Materias> lstMaterias = new List<Materias>
         {
             new Materias { IdMateria = 1, nombreMateria = "Matematicas" }
-        };
+        };*/
+        private readonly ApplicationDbContext applicationDbContext;
+        public MateriaRepositorio(ApplicationDbContext applicationDbContext)
+        {
+            this.applicationDbContext = applicationDbContext;
+        }
         public int AgregarMateria(Materias materia)
         {
             try
             {
-                if (lstMaterias.Count > 0)
+                /*if (lstMaterias.Count > 0)
                 {
                     materia.IdMateria = lstMaterias.Last().IdMateria + 1;
                 }
-                lstMaterias.Add(materia);
+                lstMaterias.Add(materia);*/
+                applicationDbContext.Materias.Add(materia);
+                applicationDbContext.SaveChanges();
                 return materia.IdMateria;
             }
             catch (Exception)
@@ -31,7 +39,7 @@ namespace adsProyecto.Repositorios
         {
             try
             {
-                if (lstMaterias.Count > 0)
+                /*if (lstMaterias.Count > 0)
                 {
                     Materias materia = lstMaterias.Find(temp => temp.IdMateria == idMateria);
                     return materia;
@@ -39,7 +47,9 @@ namespace adsProyecto.Repositorios
                 else
                 {
                     return null;
-                }
+                }*/
+                var materia = applicationDbContext.Materias.SingleOrDefault(x => x.IdMateria == idMateria);
+                return materia;
             }
             catch (Exception)
             {
@@ -52,7 +62,8 @@ namespace adsProyecto.Repositorios
         {
             try
             {
-                return lstMaterias;
+                //return lstMaterias;
+                return applicationDbContext.Materias.ToList();
             }
             catch (Exception)
             {
@@ -65,8 +76,11 @@ namespace adsProyecto.Repositorios
         {
             try
             {
-                int index = lstMaterias.FindIndex(temp => temp.IdMateria == idMateria);
-                lstMaterias.RemoveAt(index);
+                /*int index = lstMaterias.FindIndex(temp => temp.IdMateria == idMateria);
+                lstMaterias.RemoveAt(index);*/
+                var item = applicationDbContext.Materias.SingleOrDefault(x => x.IdMateria == idMateria);
+                applicationDbContext.Materias.Remove(item);
+                applicationDbContext.SaveChanges();
                 return true;
             }
             catch (Exception)
@@ -80,7 +94,7 @@ namespace adsProyecto.Repositorios
         {
             try
             {
-                int index = lstMaterias.FindIndex(temp => temp.IdMateria == idMateria);
+                /*int index = lstMaterias.FindIndex(temp => temp.IdMateria == idMateria);
                 if (index != -1)
                 {
                     lstMaterias[index] = materia;
@@ -90,7 +104,10 @@ namespace adsProyecto.Repositorios
                 else
                 {
                     return 0;
-                }
+                }*/
+                var item = applicationDbContext.Materias.SingleOrDefault(x => x.IdMateria == idMateria);
+                applicationDbContext.Entry(item).CurrentValues.SetValues(materia);
+                return idMateria;
             }
             catch (Exception)
             {
