@@ -95,6 +95,7 @@ namespace adsProyecto.Repositorios
                 
                 var item = applicationDbContext.Estudiantes.SingleOrDefault(x => x.IdEstudiante == idEstudiante);
                 applicationDbContext.Entry(item).CurrentValues.SetValues(estudiante);
+                applicationDbContext.SaveChanges();
                 return idEstudiante;
             }catch(Exception ex)
             {

@@ -102,6 +102,7 @@ namespace adsProyecto.Repositorios
                 }*/
                 var item = applicationDbContext.Profesores.SingleOrDefault(x => x.IdProfesor == idProfesor);
                 applicationDbContext.Entry(item).CurrentValues.SetValues(profesor);
+                applicationDbContext.SaveChanges();
                 return idProfesor;
             }
             catch (Exception)

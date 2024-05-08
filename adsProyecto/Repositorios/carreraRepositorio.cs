@@ -91,6 +91,7 @@ namespace adsProyecto.Repositorios
                 }*/
                 var item = applicationDbContext.Carreras.SingleOrDefault(x => x.IdCarrera == idCarrera);
                 applicationDbContext.Entry(item).CurrentValues.SetValues(carrera);
+                applicationDbContext.SaveChanges();
                 return idCarrera;
             }catch(Exception ex)
             {

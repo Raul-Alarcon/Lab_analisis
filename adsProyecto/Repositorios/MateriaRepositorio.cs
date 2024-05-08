@@ -107,6 +107,7 @@ namespace adsProyecto.Repositorios
                 }*/
                 var item = applicationDbContext.Materias.SingleOrDefault(x => x.IdMateria == idMateria);
                 applicationDbContext.Entry(item).CurrentValues.SetValues(materia);
+                applicationDbContext.SaveChanges();
                 return idMateria;
             }
             catch (Exception)

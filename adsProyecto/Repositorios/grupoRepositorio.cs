@@ -106,6 +106,7 @@ namespace adsProyecto.Repositorios
                 }*/
                 var item = applicationDbContext.Grupos.SingleOrDefault(x => x.IdGrupo == idGrupo);
                 applicationDbContext.Entry(item).CurrentValues.SetValues(Grupo);
+                applicationDbContext.SaveChanges();
                 return idGrupo;
             }
             catch (Exception)

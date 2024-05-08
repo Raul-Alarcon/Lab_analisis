@@ -15,13 +15,13 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
- 
+
 //linea que se agrego para la imyeccion de dependencias
-builder.Services.AddSingleton<IEstudiante, estudianteRepositorio>();
-builder.Services.AddSingleton<ICarrera, carreraRepositorio>();
-builder.Services.AddSingleton<IMaterias, MateriaRepositorio>();
-builder.Services.AddSingleton<IProfesor, profesorRepositorio>();
-builder.Services.AddSingleton<IGrupo, grupoRepositorio>();
+builder.Services.AddScoped<IEstudiante, estudianteRepositorio>();
+builder.Services.AddScoped<ICarrera, carreraRepositorio>();
+builder.Services.AddScoped<IMaterias, MateriaRepositorio>();
+builder.Services.AddScoped<IProfesor, profesorRepositorio>();
+builder.Services.AddScoped<IGrupo, grupoRepositorio>();
 
 var app = builder.Build();
 
