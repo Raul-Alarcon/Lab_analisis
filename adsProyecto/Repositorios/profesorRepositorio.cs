@@ -1,26 +1,34 @@
-﻿using adsProyecto.Interfaces;
+﻿using adsProyecto.DB;
+using adsProyecto.Interfaces;
 using adsProyecto.Models;
 
 namespace adsProyecto.Repositorios
 {
     public class profesorRepositorio : IProfesor
     {
-        private List<Profesor> lstProfesores = new List<Profesor>
+        /*private List<Profesor> lstProfesores = new List<Profesor>
         {
             new Profesor { IdProfesor = 1,
                 Nombre = "Juan",
                 Apellido = "Perez",
                 Correo = "hola@gmail"}
-        };
+        };*/
+        private readonly ApplicationDbContext applicationDbContext;
+        public profesorRepositorio(ApplicationDbContext applicationDbContext)
+        {
+            this.applicationDbContext = applicationDbContext;
+        }
         public int AgregarProfesor(Profesor profesor)
         {
             try
             {
-                if (lstProfesores.Count > 0)
+                /*if (lstProfesores.Count > 0)
                 {
                     profesor.IdProfesor = lstProfesores.Last().IdProfesor + 1;
                 }
-                lstProfesores.Add(profesor);
+                lstProfesores.Add(profesor);*/
+                applicationDbContext.Profesores.Add(profesor);
+                applicationDbContext.SaveChanges();
                 return profesor.IdProfesor;
             }
             catch (Exception)
@@ -34,7 +42,8 @@ namespace adsProyecto.Repositorios
         {
             try
             {
-                return lstProfesores;
+                //return lstProfesores;
+                return applicationDbContext.Profesores.ToList();
             }
             catch (Exception)
             {
@@ -47,7 +56,8 @@ namespace adsProyecto.Repositorios
         {
             try
             {
-                Profesor profesor = lstProfesores.Find(temp => temp.IdProfesor == idProfesor);
+                //Profesor profesor = lstProfesores.Find(temp => temp.IdProfesor == idProfesor);
+                var profesor = applicationDbContext.Profesores.SingleOrDefault(x => x.IdProfesor == idProfesor);
                 return profesor;
             }
             catch (Exception)
@@ -61,8 +71,11 @@ namespace adsProyecto.Repositorios
         {
             try
             {
-                int index = lstProfesores.FindIndex(temp => temp.IdProfesor == idProfesor);
-                lstProfesores.RemoveAt(index);
+                /*int index = lstProfesores.FindIndex(temp => temp.IdProfesor == idProfesor);
+                lstProfesores.RemoveAt(index);*/
+                var item = applicationDbContext.Profesores.SingleOrDefault(x => x.IdProfesor == idProfesor);
+                applicationDbContext.Profesores.Remove(item);
+                applicationDbContext.SaveChanges();
                 return true;
             }
             catch (Exception)
@@ -76,7 +89,7 @@ namespace adsProyecto.Repositorios
         {
             try
             {
-                int index = lstProfesores.FindIndex(temp => temp.IdProfesor == idProfesor);
+                /*int index = lstProfesores.FindIndex(temp => temp.IdProfesor == idProfesor);
                 if (index != -1)
                 {
                     lstProfesores[index] = profesor;
@@ -86,7 +99,10 @@ namespace adsProyecto.Repositorios
                 else
                 {
                     return 0;
-                }
+                }*/
+                var item = applicationDbContext.Profesores.SingleOrDefault(x => x.IdProfesor == idProfesor);
+                applicationDbContext.Entry(item).CurrentValues.SetValues(profesor);
+                return idProfesor;
             }
             catch (Exception)
             {
