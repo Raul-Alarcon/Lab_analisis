@@ -1,23 +1,31 @@
-﻿using adsProyecto.Interfaces;
+﻿using adsProyecto.DB;
+using adsProyecto.Interfaces;
 using adsProyecto.Models;
 
 namespace adsProyecto.Repositorios
 {
     public class grupoRepositorio: IGrupo
     {
-        private List<Grupo> lstGrupo = new List<Grupo>
+        /*private List<Grupo> lstGrupo = new List<Grupo>
         {
             new Grupo { IdGrupo = 1, IdCarrera = 1, IdMateria = 1, IdProfesor = 1, cliclo = "Enero-Junio", anio = "2021" },
-        };
+        };*/
+        private readonly ApplicationDbContext applicationDbContext;
+        public grupoRepositorio(ApplicationDbContext applicationDbContext)
+        {
+            this.applicationDbContext = applicationDbContext;
+        }
         public int AgregarGrupo(Grupo Grupo)
         {
             try
             {
-                if (lstGrupo.Count > 0)
+                /*if (lstGrupo.Count > 0)
                 {
                     Grupo.IdGrupo = lstGrupo.Last().IdGrupo + 1;
                 }
-                lstGrupo.Add(Grupo);
+                lstGrupo.Add(Grupo);*/
+                applicationDbContext.Grupos.Add(Grupo);
+                applicationDbContext.SaveChanges();
                 return Grupo.IdGrupo;
             }
             catch (Exception)
@@ -31,7 +39,7 @@ namespace adsProyecto.Repositorios
         {
             try
             {
-                if (lstGrupo.Count > 0)
+                /*if (lstGrupo.Count > 0)
                 {
                     Grupo Grupo = lstGrupo.Find(temp => temp.IdGrupo == idGrupo);
                     return Grupo;
@@ -39,7 +47,9 @@ namespace adsProyecto.Repositorios
                 else
                 {
                     return null;
-                }
+                }*/
+                var Grupo = applicationDbContext.Grupos.SingleOrDefault(x => x.IdGrupo == idGrupo);
+                return Grupo;
             }
             catch (Exception)
             {
@@ -52,7 +62,8 @@ namespace adsProyecto.Repositorios
         {
             try
             {
-                return lstGrupo;
+               // return lstGrupo;
+                return applicationDbContext.Grupos.ToList();
             }
             catch (Exception)
             {
@@ -65,8 +76,11 @@ namespace adsProyecto.Repositorios
         {
             try
             {
-                int index = lstGrupo.FindIndex(temp => temp.IdGrupo == idGrupo);
-                lstGrupo.RemoveAt(index);
+                /*int index = lstGrupo.FindIndex(temp => temp.IdGrupo == idGrupo);
+                lstGrupo.RemoveAt(index);*/
+                var item = applicationDbContext.Grupos.SingleOrDefault(x => x.IdGrupo == idGrupo);
+                applicationDbContext.Grupos.Remove(item);
+                applicationDbContext.SaveChanges();
                 return true;
             }
             catch (Exception)
@@ -79,7 +93,7 @@ namespace adsProyecto.Repositorios
         {
             try
             {
-                int index = lstGrupo.FindIndex(temp => temp.IdGrupo == idGrupo);
+                /*int index = lstGrupo.FindIndex(temp => temp.IdGrupo == idGrupo);
                 if (index != -1)
                 {
                     lstGrupo[index] = Grupo;
@@ -89,7 +103,10 @@ namespace adsProyecto.Repositorios
                 else
                 {
                     return 0;
-                }
+                }*/
+                var item = applicationDbContext.Grupos.SingleOrDefault(x => x.IdGrupo == idGrupo);
+                applicationDbContext.Entry(item).CurrentValues.SetValues(Grupo);
+                return idGrupo;
             }
             catch (Exception)
             {
