@@ -1,24 +1,32 @@
 ﻿using adsProyecto.Models;
 using adsProyecto.Interfaces;
+using adsProyecto.DB;
 namespace adsProyecto.Repositorios
 {
     public class carreraRepositorio : ICarrera
     {
-        private List<Carrera> lstCarreras = new List<Carrera>
+        /*private List<Carrera> lstCarreras = new List<Carrera>
         {
             new Carrera { IdCarrera = 1, 
                            NombreCarrera = "Ingenieria en Sistemas Informaticos",
                            CodigoCarrera = "ISI"}
-        };
+        };*/
+        private readonly ApplicationDbContext applicationDbContext;
+        public carreraRepositorio(ApplicationDbContext applicationDbContext)
+        {
+            this.applicationDbContext = applicationDbContext;
+        }
         public int AgregarCarrera(Carrera carrera)
         {
             try
             {
-                if(lstCarreras.Count > 0)
+                /*if(lstCarreras.Count > 0)
                 {
                     carrera.IdCarrera = lstCarreras.Last().IdCarrera + 1;
                 }
-                lstCarreras.Add(carrera);
+                lstCarreras.Add(carrera);*/
+                applicationDbContext.Carreras.Add(carrera);
+                applicationDbContext.SaveChanges();
                 return carrera.IdCarrera;
             }catch(Exception ex)
             {
@@ -30,7 +38,7 @@ namespace adsProyecto.Repositorios
         {
             try
             {
-                return lstCarreras;
+                return applicationDbContext.Carreras.ToList();
             }catch(Exception ex)
             {
                 throw ex;
@@ -41,7 +49,8 @@ namespace adsProyecto.Repositorios
         {
             try
             {
-                Carrera carrera = lstCarreras.Find(temp => temp.IdCarrera == idCarrera);
+                //Carrera carrera = lstCarreras.Find(temp => temp.IdCarrera == idCarrera);
+                var carrera = applicationDbContext.Carreras.SingleOrDefault(x => x.IdCarrera == idCarrera);
                 return carrera;
             }catch(Exception ex)
             {
@@ -53,8 +62,11 @@ namespace adsProyecto.Repositorios
         {
             try
             {
-                int index = lstCarreras.FindIndex(temp => temp.IdCarrera == idCarrera);
-                lstCarreras.RemoveAt(index);
+                /*int index = lstCarreras.FindIndex(temp => temp.IdCarrera == idCarrera);
+                lstCarreras.RemoveAt(index);*/
+                var carrera =  applicationDbContext.Carreras.SingleOrDefault(x => x.IdCarrera == idCarrera);
+                applicationDbContext.Remove(carrera);
+                applicationDbContext.SaveChanges();
                 return true;
             }catch(Exception ex)
             {
@@ -66,7 +78,7 @@ namespace adsProyecto.Repositorios
         {
             try
             {
-                int index = lstCarreras.FindIndex(temp => temp.IdCarrera == idCarrera);
+                /*int index = lstCarreras.FindIndex(temp => temp.IdCarrera == idCarrera);
                 if(index != -1)
                 {
                     lstCarreras[index] = carrera;
@@ -76,7 +88,10 @@ namespace adsProyecto.Repositorios
                 else
                 {
                     return 0;
-                }
+                }*/
+                var item = applicationDbContext.Carreras.SingleOrDefault(x => x.IdCarrera == idCarrera);
+                applicationDbContext.Entry(item).CurrentValues.SetValues(carrera);
+                return idCarrera;
             }catch(Exception ex)
             {
                 throw ex;
