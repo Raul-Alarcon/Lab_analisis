@@ -7,7 +7,6 @@ namespace adsProyecto.Models
     [PrimaryKey(nameof(IdGrupo))]
     public class Grupo
     {
-        [Required(ErrorMessage = "El campo es obligatorio")]
         public int IdGrupo { get; set; }
         [Required(ErrorMessage = "El campo es obligatorio")]
         public int IdCarrera { get; set; }
@@ -19,6 +18,5 @@ namespace adsProyecto.Models
         public string cliclo { get; set; }
         [Required(ErrorMessage = "El campo es obligatorio")]
         public string anio { get; set; }
-
     }
 }
